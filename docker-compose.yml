@@ -1,0 +1,26 @@
+version: '3.4'
+
+services:
+  mysql:
+    image: mysql
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    ports:
+      - '3307:3306'
+    environment:
+      MYSQL_DATABASE: 'ukbase_account_service'
+      MYSQL_PASSWORD: '123456'
+      MYSQL_ROOT_PASSWORD: 'verystrongpassword'
+    restart: always
+  dockerdemo:
+    image: dockerdemo
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+    ports:
+      - 3000:3000
+    depends_on:
+      - mysql
+    restart: always
